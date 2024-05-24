@@ -1,0 +1,92 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "My API"
+  description: "API Documentation"
+host: "localhost:3000"
+basePath: "/"
+schemes:
+  - "http"
+paths:
+  /session/register:
+    post:
+      tags:
+        - Session
+      summary: "Register a new user"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "User information"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              name:
+                type: "string"
+              surname:
+                type: "string"
+              email:
+                type: "string"
+              password:
+                type: "string"
+      responses:
+        "200":
+          description: "User created"
+        "400":
+          description: "Missing data or email already used"
+  session/login:
+    post:
+      tags:
+        - Session
+      summary: "Login a user"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "User credentials"
+          required: true
+          schema:
+            type: "object"
+            properties:
+              email:
+                type: "string"
+              password:
+                type: "string"
+      responses:
+        "200":
+          description: "Logged in"
+        "400":
+          description: "Missing credentials"
+        "404":
+          description: "User not found"
+  /session/whoami:
+    get:
+      tags:
+        - Session
+      summary: "Get current user"
+      responses:
+        "200":
+          description: "Current user"
+  /session/logout:
+    get:
+      tags:
+        - Session
+      summary: "Logout a user"
+      responses:
+        "200":
+          description: "Logged out"
+  /session/ping:
+    get:
+      tags:
+        - Session
+      summary: "Ping the server"
+      responses:
+        "200":
+          description: "Pong"
+  /session/users:
+    get:
+      tags:
+        - Session
+      summary: "Get all users"
+      responses:
+        "200":
+          description: "List of users"

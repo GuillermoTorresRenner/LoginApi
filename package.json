@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
@@ -22,8 +23,14 @@
     "passport-jwt": "^4.0.1"
   },
   "devDependencies": {
+    "chai": "^5.1.1",
+    "mocha": "^10.4.0",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.0",
-    "prisma": "^5.13.0"
+    "prisma": "^5.13.0",
+    "supertest": "^7.0.0",
+    "swagger": "^0.7.5",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   }
 }

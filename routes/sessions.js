@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import passport from "passport";
 
 import UsersDAO from "../dao/users.dao.js";
+import UsersDto from "../app/dto/users.dto.js";
 
 const router = Router();
 
@@ -49,32 +50,29 @@ router.post("/login", async (req, res) => {
         maxAge: 1000 * 60 * 60,
       })
       .json({ status: 200, msg: "Logged in" });
-
-    // ¿Por qué uso signed cookies y signed JWT?
-    // El signed o firma únicamente me sirve para asegurar que el contenido (de la cookie
-    // o del JWT) no fue alterado, ya que para poder alterarlo se necesita el secret correspondiente.
-    // Tener ambas cosas firmadas con distintos secrets implica que un atacante debería encontrar
-    // ambos secrets para poder alterar el contenido, siendo un poco más preventivo frente a un posible leakeo
-    // de estos secrets.
   }
 });
 
-// El session:false indica a passport que no es necesario que persista data intemerdia del usuario
-// a través de sesiones, esto depende mucho de la estrategia de autenticación que se este usando.
-// En este caso como toda la data resultante del login se la asignamos al usuario directamete a través
-// de cookies, no hace falta que passport maneje sesiones. Por esto mismo es que tampoco hacemos uso
-// de las funciones serialize o deserealize de passport
 router.get(
-  "/current",
+  "/whoami",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.json(req.user);
+    res.send(UsersDto.getUser(req.user));
   }
 );
 
 router.get("/logout", (req, res) => {
   res.clearCookie("jwt");
   res.status(200).json({ status: 200, msg: "Logged out" });
+});
+
+router.get("/ping", (req, res) => {
+  res.status(200).json({ status: 200, msg: "Pong" });
+});
+
+router.get("/users", async (req, res) => {
+  const users = await UsersDAO.getUsers();
+  res.status(200).send(users);
 });
 
 export default router;

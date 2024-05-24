@@ -33,6 +33,9 @@ class UsersDAO {
   static async getUserByID(id) {
     return await prisma.users.findUnique({ where: { id } });
   }
+  static async getUsers() {
+    return await prisma.users.findMany();
+  }
 }
 
 export default UsersDAO;
